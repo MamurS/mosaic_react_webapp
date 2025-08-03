@@ -1,0 +1,108 @@
+{
+  "name": "mosaic_react_app",
+  "version": "1.0.0",
+  "description": "Professional Insurance Management System with React, Tailwind CSS, and advanced 3D search functionality",
+  "keywords": [
+    "insurance",
+    "management",
+    "react",
+    "tailwind",
+    "dashboard",
+    "crm",
+    "enterprise"
+  ],
+  "author": {
+    "name": "Insurance Management Team",
+    "email": "dev@insurance-system.com"
+  },
+  "license": "MIT",
+  "homepage": ".",
+  "private": true,
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx --max-warnings 0",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js",
+    "serve": "serve -s build -l 3000",
+    "clean": "rm -rf build node_modules/.cache",
+    "predeploy": "npm run build",
+    "deploy": "npm run build && echo 'Ready for deployment'",
+    "dev": "npm start",
+    "prod": "npm run build && npm run serve"
+  },
+  "dependencies": {
+    "lucide-react": "^0.454.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-scripts": "5.0.1",
+    "recharts": "^2.12.7",
+    "web-vitals": "^4.2.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.5.2",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/index.js",
+      "!src/reportWebVitals.js",
+      "!src/**/*.d.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "proxy": "http://127.0.0.1:8000",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/insurance-management-system.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/insurance-management-system/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/your-username"
+  }
+}

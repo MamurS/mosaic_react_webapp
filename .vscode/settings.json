@@ -1,0 +1,9 @@
+{
+  "typescript.validate.enable": false,
+  "javascript.validate.enable": true,
+  "typescript.suggestionActions.enabled": false,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "files.associations": {
+    "*.js": "javascript"
+  }
+}

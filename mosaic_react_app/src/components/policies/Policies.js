@@ -1,37 +1,37 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Filter, 
-  Download, 
-  Edit, 
-  Trash2, 
-  FileText, 
+import {
+  Search,
+  Plus,
+  Filter,
+  Download,
+  Edit,
+  Trash2,
+  FileText,
   Calendar,
   DollarSign,
   TrendingUp,
   Users,
   AlertTriangle
 } from 'lucide-react';
-import { 
-  STATUS_COLORS, 
-  formatCurrency, 
-  formatDate, 
-  POLICY_STATUS_OPTIONS 
+import {
+  STATUS_COLORS,
+  formatCurrency,
+  formatDate,
+  POLICY_STATUS_OPTIONS
 } from '../../utils/constants';
 
-const Policies = ({ 
-  policies = [], 
-  clients = [], 
-  onCreateNew, 
-  onEditPolicy, 
-  onDeletePolicy, 
-  onRefresh 
+const Policies = ({
+  policies = [],
+  clients = [],
+  onCreateNew,
+  onEditPolicy,
+  onDeletePolicy,
+  onRefresh
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [clientFilter, setClientFilter] = useState('');
-  const [sortBy, setSortBy] = useState('creation_date');
+  const [sortBy, setSortBy] = useState('creationDate'); // Updated
   const [sortOrder, setSortOrder] = useState('desc');
   const [selectedPolicies, setSelectedPolicies] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -45,10 +45,10 @@ const Policies = ({
       if (!policy) return false;
 
       // Search filter - safely handle undefined values
-      const searchMatch = !searchTerm?.trim() || 
+      const searchMatch = !searchTerm?.trim() ||
         (policy.id && policy.id.toString().includes(searchTerm)) ||
-        (policy.client_name && policy.client_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (policy.coverage_type && policy.coverage_type.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (policy.clientName && policy.clientName.toLowerCase().includes(searchTerm.toLowerCase())) || // Updated
+        (policy.coverageType && policy.coverageType.toLowerCase().includes(searchTerm.toLowerCase())) || // Updated
         (policy.underwriter && policy.underwriter.toLowerCase().includes(searchTerm.toLowerCase()));
 
       // Status filter
@@ -60,10 +60,10 @@ const Policies = ({
       // Date filter - safely handle date
       let dateMatch = true;
       if (policyDateFilter.year || policyDateFilter.month) {
-        if (policy.creation_date) {
-          const policyDate = new Date(policy.creation_date);
+        if (policy.creationDate) { // Updated
+          const policyDate = new Date(policy.creationDate); // Updated
           dateMatch = (!policyDateFilter.year || policyDate.getFullYear() === parseInt(policyDateFilter.year)) &&
-                    (!policyDateFilter.month || policyDate.getMonth() === parseInt(policyDateFilter.month));
+                      (!policyDateFilter.month || policyDate.getMonth() === parseInt(policyDateFilter.month));
         } else {
           dateMatch = false;
         }
@@ -82,7 +82,7 @@ const Policies = ({
       if (bValue === undefined || bValue === null) bValue = '';
 
       // Handle different data types
-      if (sortBy === 'creation_date') {
+      if (sortBy === 'creationDate') { // Updated
         aValue = new Date(aValue || 0);
         bValue = new Date(bValue || 0);
       } else if (typeof aValue === 'string') {
@@ -114,13 +114,13 @@ const Policies = ({
       if (!policy) return acc;
 
       acc.total += 1;
-      
+
       if (policy.status === 'active') acc.active += 1;
       else if (policy.status === 'pending') acc.pending += 1;
       else if (policy.status === 'expired') acc.expired += 1;
-      
+
       acc.totalPremium += policy.premium || 0;
-      
+
       return acc;
     }, {
       total: 0,
@@ -423,7 +423,7 @@ const Policies = ({
                   <th className="table-header-cell cursor-pointer" onClick={() => handleSort('client')}>
                     Клиент
                   </th>
-                  <th className="table-header-cell cursor-pointer" onClick={() => handleSort('coverage_type')}>
+                  <th className="table-header-cell cursor-pointer" onClick={() => handleSort('coverageType')}>
                     Тип покрытия
                   </th>
                   <th className="table-header-cell cursor-pointer" onClick={() => handleSort('premium')}>
@@ -432,7 +432,7 @@ const Policies = ({
                   <th className="table-header-cell cursor-pointer" onClick={() => handleSort('status')}>
                     Статус
                   </th>
-                  <th className="table-header-cell cursor-pointer" onClick={() => handleSort('creation_date')}>
+                  <th className="table-header-cell cursor-pointer" onClick={() => handleSort('creationDate')}>
                     Дата создания
                   </th>
                   <th className="table-header-cell">Действия</th>
@@ -460,11 +460,11 @@ const Policies = ({
                       </div>
                     </td>
                     <td className="table-cell">
-                      {policy?.coverage_type || 'Не указан'}
+                      {policy?.coverageType || 'Не указан'}
                     </td>
                     <td className="table-cell">
                       <div className="font-medium">
-                        {safeFormatCurrency(policy?.premium, policy?.premium_currency)}
+                        {safeFormatCurrency(policy?.premium, policy?.premiumCurrency)}
                       </div>
                     </td>
                     <td className="table-cell">
@@ -473,7 +473,7 @@ const Policies = ({
                       </span>
                     </td>
                     <td className="table-cell">
-                      {safeFormatDate(policy?.creation_date)}
+                      {safeFormatDate(policy?.creationDate)}
                     </td>
                     <td className="table-cell">
                       <div className="flex items-center space-x-2">

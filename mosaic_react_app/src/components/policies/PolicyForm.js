@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Save, X, AlertCircle, CheckCircle } from 'lucide-react';
 import ClientSearch from '../common/ClientSearch';
-import { 
-  DEFAULT_POLICY_FORM, 
-  COVERAGE_TYPE_OPTIONS, 
-  INSURANCE_TERM_OPTIONS, 
+import {
+  DEFAULT_POLICY_FORM,
+  COVERAGE_TYPE_OPTIONS,
+  INSURANCE_TERM_OPTIONS,
   CURRENCIES,
   POLICY_STATUS_OPTIONS,
   SUCCESS_MESSAGES,
   ERROR_MESSAGES,
-  API_URL 
+  API_URL
 } from '../../utils/constants';
 
 const FormSection = ({ title, children }) => (
@@ -34,9 +34,9 @@ const FormField = ({ label, required = false, error, children }) => (
   </div>
 );
 
-const PolicyForm = ({ 
-  onSave, 
-  onCancel, 
+const PolicyForm = ({
+  onSave,
+  onCancel,
   initialData = null,
   authToken,
   clients = []
@@ -44,18 +44,18 @@ const PolicyForm = ({
   // Create default form with status
   const defaultFormData = {
     creationDate: new Date().toISOString().split('T')[0],
-    insuranceAmount: 5000000,
+    insuranceAmount: "",
     insuranceAmountCurrency: 'UZS',
-    policyLimit: 3000000,
+    policyLimit: "",
     policyLimitCurrency: 'UZS',
-    clientLimit: 2000000,
+    clientLimit: "",
     clientLimitCurrency: 'UZS',
     coverageType: 'Полное покрытие',
     insuranceTerm: '12 месяцев',
-    premium: 125000,
-    netPremium: 100000,
+    premium: "",
+    netPremium: "",
     premiumCurrency: 'UZS',
-    rate: 2.5,
+    rate: "",
     reinsurance: 'No',
     underwriter: '',
     notes: '',
@@ -77,9 +77,9 @@ const PolicyForm = ({
       setFormData({
         ...defaultFormData,
         ...initialData,
-        creationDate: initialData.creation_date || new Date().toISOString().split('T')[0]
+        creationDate: initialData.creationDate || new Date().toISOString().split('T')[0]
       });
-      
+
       // Find and set the selected client
       if (initialData.client && clients.length > 0) {
         const client = clients.find(c => c.id === initialData.client);
@@ -148,7 +148,7 @@ const PolicyForm = ({
       if (field === 'client') {
         value = selectedClient?.id;
       }
-      
+
       if (!value || (typeof value === 'string' && !value.trim()) || (typeof value === 'number' && value <= 0)) {
         setErrors(prev => ({
           ...prev,
@@ -163,7 +163,7 @@ const PolicyForm = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     let processedValue = value;
 
     // Convert to number for numeric fields
@@ -203,25 +203,25 @@ const PolicyForm = ({
       ...prev,
       client: client.id
     }));
-    
+
     setTouched(prev => ({
       ...prev,
       client: true
     }));
-    
+
     validateField('client', client.id);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     console.log('Form submission started:', { formData, selectedClient }); // Debug log
-    
+
     // Ensure client is set
     if (selectedClient) {
       setFormData(prev => ({ ...prev, client: selectedClient.id }));
     }
-    
+
     if (!validateForm() || !selectedClient) {
       console.log('Validation failed:', { errors, selectedClient }); // Debug log
       if (!selectedClient) {
@@ -233,37 +233,37 @@ const PolicyForm = ({
     setLoading(true);
     setSuccess('');
     setErrors(prev => ({ ...prev, submit: '' })); // Clear previous submit errors
-    
+
     try {
-      // Prepare data for API - ensure all field mappings are correct
+      // Prepare data for API - UPDATED to camelCase
       const policyData = {
         client: selectedClient.id,
-        creation_date: formData.creationDate,
-        insurance_amount: formData.insuranceAmount,
-        insurance_amount_currency: formData.insuranceAmountCurrency,
-        policy_limit: formData.policyLimit,
-        policy_limit_currency: formData.policyLimitCurrency,
-        client_limit: formData.clientLimit,
-        client_limit_currency: formData.clientLimitCurrency,
-        coverage_type: formData.coverageType,
-        insurance_term: formData.insuranceTerm,
+        creationDate: formData.creationDate,
+        insuranceAmount: formData.insuranceAmount,
+        insuranceAmountCurrency: formData.insuranceAmountCurrency,
+        policyLimit: formData.policyLimit,
+        policyLimitCurrency: formData.policyLimitCurrency,
+        clientLimit: formData.clientLimit,
+        clientLimitCurrency: formData.clientLimitCurrency,
+        coverageType: formData.coverageType,
+        insuranceTerm: formData.insuranceTerm,
         premium: formData.premium,
-        net_premium: formData.netPremium,
-        premium_currency: formData.premiumCurrency,
+        netPremium: formData.netPremium,
+        premiumCurrency: formData.premiumCurrency,
         rate: formData.rate,
         reinsurance: formData.reinsurance,
         underwriter: formData.underwriter,
         notes: formData.notes,
-        status: formData.status || 'pending' // Ensure status is always sent
+        status: formData.status || 'pending'
       };
 
       console.log('Sending policy data to API:', policyData); // Debug log
 
       await onSave(policyData);
-      
+
       console.log('Policy saved successfully'); // Debug log
       setSuccess(isEditing ? 'Полис обновлен' : 'Полис создан');
-      
+
       // Clear form if creating new policy
       if (!isEditing) {
         setFormData(defaultFormData);
@@ -271,7 +271,7 @@ const PolicyForm = ({
         setTouched({});
         setErrors({});
       }
-      
+
       // Auto-hide success message and close form after 2 seconds
       setTimeout(() => {
         setSuccess('');
@@ -279,10 +279,10 @@ const PolicyForm = ({
           onCancel(); // Close the form after successful edit
         }
       }, 2000);
-      
+
     } catch (error) {
       console.error('Error saving policy:', error);
-      setErrors({ 
+      setErrors({
         submit: error.message || 'Ошибка при сохранении полиса'
       });
     } finally {
@@ -302,15 +302,15 @@ const PolicyForm = ({
 
   const getFieldClassName = (fieldName) => {
     const baseClasses = "w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors";
-    
+
     if (errors[fieldName]) {
       return `${baseClasses} border-red-300 focus:border-red-500 focus:ring-red-500`;
     }
-    
+
     if (touched[fieldName] && !errors[fieldName] && formData[fieldName]) {
       return `${baseClasses} border-green-300 focus:border-green-500`;
     }
-    
+
     return `${baseClasses} border-gray-300`;
   };
 
@@ -326,7 +326,7 @@ const PolicyForm = ({
             {isEditing ? 'Обновите информацию о полисе' : 'Заполните данные для создания нового полиса'}
           </p>
         </div>
-        
+
         <div className="flex gap-4">
           <button
             type="button"
@@ -337,7 +337,7 @@ const PolicyForm = ({
             <X size={18} className="inline mr-2" />
             Отмена
           </button>
-          
+
           <button
             type="submit"
             disabled={loading || Object.keys(errors).length > 0}
@@ -635,7 +635,7 @@ const PolicyForm = ({
           <div><strong>Премия:</strong> {formData.premium?.toLocaleString()} {formData.premiumCurrency}</div>
           <div><strong>Статус:</strong> {POLICY_STATUS_OPTIONS.find(opt => opt.value === formData.status)?.label || formData.status}</div>
         </div>
-        
+
         {(Object.keys(errors).length > 0 || !selectedClient) && (
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700 text-sm">

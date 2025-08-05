@@ -123,16 +123,7 @@ const Dashboard = ({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <button
-          onClick={handleNewPolicyClick}
-          className="bg-blue-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
-        >
-          <Plus size={20} />
-          Новый полис
-        </button>
-      </div>
+      
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -205,7 +205,7 @@ const Policies = ({
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Управление полисами</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Портфель</h1>
           <p className="text-gray-600 mt-1">
             Создание, редактирование и отслеживание страховых полисов
           </p>
